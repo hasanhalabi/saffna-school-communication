@@ -1,0 +1,32 @@
+# Local secrets and application state
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Laravel and PHP generated/dependency files
+/apps/web/vendor/
+/apps/web/node_modules/
+/apps/web/public/build/
+/apps/web/bootstrap/cache/*.php
+/apps/web/storage/*.key
+/apps/web/storage/app/private/
+/apps/web/storage/framework/cache/
+/apps/web/storage/framework/sessions/
+/apps/web/storage/framework/views/
+/apps/web/storage/logs/
+/apps/web/storage/debugbar/
+
+# Local editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Keep dependency lockfiles, source assets, reviewed migrations, and canonical artifacts tracked.

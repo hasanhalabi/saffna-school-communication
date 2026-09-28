@@ -1,0 +1,138 @@
+schema_version: 1
+
+foundation:
+  skill: bootstrap-governed-project
+  profile_version: 1
+  created_date: "2026-09-28"
+  foundation_stage: "SAFFNA-FND-001"
+
+project:
+  name: "Saffna"
+  slug: "saffna-school-communication"
+  client: "Unresolved owning organization; Hasan is the requesting product owner"
+  objective: "Enable school communication among students, teachers, and parents"
+  primary_deliverable: "Browser-based school communication platform"
+  target_users:
+    - "Admin users"
+    - "Teachers"
+    - "Parents"
+    - "Students"
+
+runtime_surfaces:
+  - id: "web"
+    role: "primary"
+    technology: "Laravel 12, PHP business classes, HTTP API, native JavaScript Web Components, SQLite"
+    path: "apps/web"
+    deployable: true
+    owner: "Saffna product owner; operational owner unresolved"
+
+source_strategy:
+  type: "greenfield"
+  references: []
+  commercial_source:
+    used: false
+    product: null
+    vendor: null
+    public_url: null
+    exact_version_status: "not-applicable"
+    license_owner_status: "not-applicable"
+    secret_storage_note: "Never store purchase codes or credentials in this profile."
+
+delivery:
+  platforms:
+    - "web browser"
+  targets:
+    - "Laravel web application; host and domain unresolved"
+  required_completion_states: []
+  languages:
+    - "Arabic (primary, RTL)"
+    - "English (LTR)"
+  regions: []
+
+environments:
+  - id: "local-dev"
+    name: "Local DEV"
+    status: "defined"
+    purpose: "Local authoring workspace; runtime not installed"
+  - id: "server-dev-staging"
+    name: "Server DEV/Staging"
+    status: "unresolved"
+  - id: "live-production"
+    name: "Live production"
+    status: "unresolved"
+
+task_tracking:
+  provider: "clickup"
+  workspace_id: "3668514"
+  source_of_truth: true
+  lists:
+    - id: "901821841766"
+      name: "Saffna"
+      url: "https://app.clickup.com/3668514/v/li/901821841766"
+      scopes:
+        - "web"
+        - "API within web"
+        - "database within web"
+        - "documentation"
+      observed_on: "2026-09-28"
+      observed_parent_space: "Eyadaty"
+      observed_parent_folder: "unresolved from list-detail response"
+      observed_statuses:
+        - "to do"
+        - "scope defined"
+        - "in progress"
+        - "complete"
+      observed_list_custom_fields: []
+      permissions:
+        read: "disclosed-stage-action"
+        comment: "approval-required"
+        create: "approval-required"
+        mutate_fields: "approval-required"
+
+governance:
+  minimum_confidence: 95
+  explicit_stage_approval: true
+  approval_expires_on_material_scope_change: true
+  workspace_file_work_default: true
+  external_actions_require_disclosure: true
+  task_status_separate_from_approval: true
+  task_backed_closeout_comment_required: true
+  approved_deviations: []
+
+constraints:
+  security:
+    - "Login required for admin users, teachers, parents, and students; permissions unresolved"
+  privacy:
+    - "School and student-related personal data is in scope; data controls unresolved"
+  regulatory: []
+  localization:
+    - "Arabic primary with RTL; English with LTR"
+  operational:
+    - "One Laravel deployable with separate business, API, and Web Component areas"
+    - "Bootstrap 5 only as frontend UI library; exact version resolved in later package stage"
+    - "Font Awesome Free assets hosted locally; no icon CDN"
+    - "Project-authored runtime PHP class and JavaScript component filenames use Saffna prefix"
+
+references:
+  local_repositories: []
+  public_urls: []
+
+open_decisions:
+  - id: "OD-OWN-001"
+    question: "Which organization owns Saffna and who operates each environment?"
+    blocking_stage: "Remote deployment and operations"
+  - id: "OD-PRODUCT-001"
+    question: "What are the detailed workflows and acceptance criteria for each named module?"
+    blocking_stage: "Module implementation"
+  - id: "OD-SEC-001"
+    question: "What are role permissions, account links, and student-data protection rules?"
+    blocking_stage: "Identity, schema, and module implementation"
+  - id: "OD-API-001"
+    question: "What are the API contracts, errors, and compatibility rules?"
+    blocking_stage: "API implementation"
+  - id: "OD-DELIVERY-001"
+    question: "What are supported browsers, hosting targets, regions, and release completion states?"
+    blocking_stage: "UI acceptance and deployment"
+  - id: "OD-DATA-001"
+    question: "What SQLite version, entity model, backup, restore, retention, and migration approach are required?"
+    blocking_stage: "Database implementation and deployment"
