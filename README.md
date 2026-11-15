@@ -39,6 +39,12 @@ Start with:
 
 The educational endpoint is a locally runnable, tested, and documented application. This repository is not a production-ready school system, and it must not be used with real student or family data without separate security, privacy, operational, and deployment work.
 
+## Project tracking
+
+The private Saffna ClickUp list is the task source of truth. [GitHub Issues](https://github.com/hasanhalabi/saffna-school-communication/issues) provides a public, read-only view for course viewers who cannot access ClickUp. Each mirrored issue identifies its ClickUp task without exposing ClickUp credentials or requiring a ClickUp account.
+
+Codex updates the matching GitHub Issue in the same working session after an authorized ClickUp task, subtask, status, description, or comment change. There is no background scheduler or repository token for ClickUp. GitHub comments may support course discussion, but they do not update ClickUp and do not change the approved project plan.
+
 ## Reuse and contributions
 
 Hasan’s original material in this repository is released under the [Zero-Clause BSD License (0BSD)](LICENSE). You may use, copy, change, distribute, or sell that material without asking permission or crediting Hasan. It is provided without warranty. **Third-party components keep their own licenses and notices**; see [Third-Party Notices](THIRD_PARTY_NOTICES.md). The repository license does not set reuse terms for YouTube videos, music, or other course media.

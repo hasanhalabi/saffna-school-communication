@@ -89,6 +89,22 @@ task_tracking:
         comment: "one standing-authorized chat-linkage comment; otherwise approval-required"
         create: "one standing-authorized task after complete duplicate search finds no match; otherwise approval-required"
         mutate_fields: "approval-required"
+  public_mirror:
+    provider: "github-issues"
+    repository: "hasanhalabi/saffna-school-communication"
+    url: "https://github.com/hasanhalabi/saffna-school-communication/issues"
+    role: "public derived view; never a task source of truth or approval source"
+    direction: "ClickUp to GitHub only"
+    execution: "same Codex session immediately after an authorized ClickUp mutation"
+    scheduled: false
+    manual_run: false
+    clickup_repository_secret_required: false
+    matching:
+      task: "hidden stable ClickUp task ID marker"
+      comment: "hidden stable ClickUp comment ID marker"
+    permissions:
+      startup_task_resolution: "standing authorization for the exact resolved primary-task Issue and linkage-comment mirror"
+      other_writes: "must accompany and be disclosed with the authorized ClickUp mutation"
   chat_workflow:
     direct_answer_requires_task: false
     work_chat_requires_primary_task: true
@@ -98,6 +114,7 @@ task_tracking:
     task_linkage:
       - "ClickUp task ID in Codex chat title"
       - "One ClickUp linkage comment"
+      - "Marker-bearing GitHub Issue and mirrored linkage comment"
     new_task_required_sections:
       - "Objective"
       - "Scope"
@@ -107,7 +124,9 @@ task_tracking:
     closeout_trigger: "Explicit product-owner request after an approved stage covers the exact closeout bundle"
     closeout_order:
       - "Post ClickUp closeout comment"
+      - "Mirror the closeout comment to GitHub"
       - "Set ClickUp task to the configured closed status"
+      - "Close the matching GitHub Issue"
       - "Commit only approved files with the task ID"
       - "Non-force push the approved branch"
 
@@ -121,8 +140,11 @@ governance:
   task_backed_closeout_comment_required: true
   standing_local_read_only_discovery: true
   standing_startup_task_resolution: true
+  standing_primary_task_github_mirror: true
   single_implementation_handshake_after_task_resolution: true
   closeout_bundle_normally_preapproved_in_stage: true
+  github_issues_is_derived_task_view: true
+  clickup_mutations_require_same_session_github_mirror: true
   approved_deviations: []
 
 constraints:

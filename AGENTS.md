@@ -1,6 +1,6 @@
 # Saffna Workspace Instructions
 
-> APPROVAL STOP RULE: A request to fix, change, or finish work is not stage approval. Before any file edit (including this file), write command, test, build, application execution, or other non-authoring action outside the standing discovery allowances below, send the complete five-item handshake in a final response and end that turn. A later user message must explicitly approve the named stage. Check that approval covers each action. Generic assent, tool access, and task status do not count. Read-only local inspection that does not run application behavior and the bounded Startup Task Resolution workflow are standing discovery allowances; neither is stage approval.
+> APPROVAL STOP RULE: A request to fix, change, or finish work is not stage approval. Before any file edit (including this file), write command, test, build, application execution, or other non-authoring action outside the standing discovery allowances below, send the complete five-item handshake in a final response and end that turn. A later user message must explicitly approve the named stage. Check that approval covers each action. Generic assent, tool access, and task status do not count. Read-only local inspection and the bounded Startup Task Resolution workflow, including its exact companion GitHub Issue mirror, are standing discovery allowances; neither is stage approval.
 
 ## Scope And Runtime Layout
 
@@ -11,7 +11,7 @@ Saffna is a school communication platform. The only planned deployable is one La
 - Require at least 95/100 evidence-based confidence for a named stage. Confidence is not approval.
 - The initial request is not stage approval. For project work, first complete the standing Startup Task Resolution workflow so the exact ClickUp task is known. Then send one final response containing all five items: (1) stage summary with outcome, files, exclusions, sources, and validation; (2) assumptions and open questions; (3) the six-part confidence score and deductions; (4) every planned file change and every non-authoring action with target, environment, read/write effect, and side effects, including the normal closeout bundle; and (5) `Please confirm: proceed with implementation for Stage <ID>.` End the turn after that response.
 - Begin only after a later user message names and approves that stage. Quote the actual approval in commentary before the first implementation action. Before each implementation action, check that the approval covers its files, target, environment, and validation.
-- Do not require a preliminary approval merely to read local project files or resolve and link the chat's ClickUp task under the standing allowances. These actions gather the evidence needed for the single implementation handshake; they do not authorize implementation.
+- Do not require a preliminary approval merely to read local project files or resolve and link the chat's ClickUp task under the standing allowances. This includes creating or repairing only that task's GitHub Issue mirror and mirroring its linkage comment. These actions gather the evidence needed for the single implementation handshake; they do not authorize implementation.
 - If scope changes materially, issue a revised handshake and obtain a new named-stage approval. After a resume, handoff, context compaction, or model change, re-establish approval evidence before continuing.
 - If work starts or exceeds scope without valid approval, stop, disclose known effects, preserve existing work, and request a corrective stage. Do not silently repair or revert.
 
@@ -19,7 +19,7 @@ The full rule and scoring rubric are in `artifacts/workspace-governance/stage-ap
 
 ## Workspace And External Actions
 
-Workspace file authoring is limited to the approved stage. Read-only local inspection is allowed before the handshake when it does not run application behavior. The bounded Startup Task Resolution actions in the Task Tracking section have standing owner authorization and may use the required ClickUp and Codex tools before the handshake. Disclose and obtain named-stage approval before database access, other remote access, browser/UI automation, network/API calls, downloads, package changes, tests, builds, formatters, scripts, migrations, servers, deployments, write-capable Git actions, other ClickUp mutations, or writes outside the workspace. A connected tool or credential grants no authority beyond these explicit allowances. Keep secrets out of files and tool output.
+Workspace file authoring is limited to the approved stage. Read-only local inspection is allowed before the handshake when it does not run application behavior. The bounded Startup Task Resolution actions in the Task Tracking section have standing owner authorization and may use the required ClickUp, GitHub, and Codex tools before the handshake for the exact primary-task mirror only. Disclose and obtain named-stage approval before database access, other remote access, browser/UI automation, network/API calls, downloads, package changes, tests, builds, formatters, scripts, migrations, servers, deployments, write-capable Git actions, other ClickUp mutations, unrelated GitHub mutations, or writes outside the workspace. A connected tool or credential grants no authority beyond these explicit allowances. Keep secrets out of files and tool output.
 
 ## Scope Changes And Closeout
 
@@ -34,6 +34,7 @@ Review changed rules across the web application, data, API contracts, security, 
 - API direction and contracts: `artifacts/integrations-inbound/` and `artifacts/integrations-outbound/`.
 - Security, environments, and task rules: their corresponding artifact folders.
 - ClickUp list `901821841766` is the configured task source of truth; task status never substitutes for approval.
+- GitHub Issues in `hasanhalabi/saffna-school-communication` are a derived public mirror; they are never a task source of truth or approval source.
 
 Read `artifacts/README.md` before creating or moving artifacts. Raw product-owner inputs and archives are not active rules.
 
@@ -55,22 +56,31 @@ Use Laravel 12 for the single web application, SQLite for its planned data store
 
 ## Task Tracking
 
-Follow `artifacts/workspace-governance/clickup-task-management.md`. Startup Task Resolution is the only standing ClickUp exception; all other ClickUp access and task changes must be disclosed in the applicable stage. Create no local TODO, backlog, sprint, or task queue artifacts. A task-backed stage requires its approved closeout comment before completion.
+Follow `artifacts/workspace-governance/clickup-task-management.md`. Startup Task Resolution is the only standing ClickUp exception; its exact primary-task GitHub Issue mirror is the only standing GitHub write exception. All other ClickUp access, task changes, and GitHub mutations must be disclosed in the applicable stage. Create no local TODO, backlog, sprint, or task queue artifacts. A task-backed stage requires its approved closeout comment and matching GitHub mirror before completion.
 
 ### Chat Startup And Task Resolution
 
 - At the start of a chat, classify it as a direct-answer chat or a work chat. A direct-answer chat only answers an informational question and makes no project change or implementation deliverable; it does not need a ClickUp task. If its scope becomes project work, run Startup Task Resolution before planning implementation.
 - Every work chat must be linked to one primary task in the Saffna ClickUp list. Multiple chats may reuse the same task when they concern the same outcome.
-- Startup Task Resolution has standing owner authorization and needs no preliminary stage approval. It is limited to: confirming ClickUp identity and current list metadata; searching and reading the configured list, including closed tasks, subtasks, likely task details, and comments; selecting one clear match; or creating exactly one task when complete search coverage finds no match; renaming the current Codex chat to include the task ID; posting one short linkage comment; and verifying the result.
+- Startup Task Resolution has standing owner authorization and needs no preliminary stage approval. It is limited to: confirming ClickUp identity and current list metadata; searching and reading the configured list, including closed tasks, subtasks, likely task details, and comments; selecting one clear match; or creating exactly one task when complete search coverage finds no match; renaming the current Codex chat to include the task ID; posting one short linkage comment; creating or repairing only that task's GitHub Issue mirror; mirroring the linkage comment; and verifying both systems.
 - A created task must have an outcome-oriented title and a description containing the objective, scope, acceptance criteria, relevant dependencies, and an appropriate automated-testing and validation strategy. Do not assign it, set dates, or change unrelated fields unless separately authorized.
 - If multiple tasks could reasonably match, do not create a duplicate. Ask one short question only when the correct task cannot be determined from available evidence.
 - After resolution, identify the exact task ID and HTTPS link in the single implementation handshake. Task resolution and task status never substitute for named-stage approval.
 
+### GitHub Issues Mirror
+
+- Follow `artifacts/workspace-governance/clickup-github-issues-mirror.md`. The Saffna ClickUp list remains the only task source of truth. GitHub Issues are a public, derived, one-way view.
+- After Codex performs any authorized ClickUp task creation or change, update the corresponding GitHub Issue in the same session before treating the ClickUp operation as complete. This includes descriptions, subtasks, statuses, and comments.
+- Every stage that authorizes a ClickUp mutation must disclose its companion GitHub Issue write. The mirror does not grant authority for the ClickUp mutation itself or for unrelated GitHub changes.
+- Use the existing local `clickup_local_core` MCP for ClickUp and the connected GitHub Issue tools for GitHub. Do not add a scheduler, GitHub Actions workflow, ClickUp API token, repository secret, raw API call, browser automation, or alternative connector for mirroring.
+- Match issues and comments only by their stable hidden ClickUp markers. Never match by title alone. Stop on duplicates or uncertain writes and report the exact partial state; do not retry an uncertain mutation.
+- GitHub-authored changes never update ClickUp. Preserve GitHub-only discussion comments, but generated issue bodies may be repaired from ClickUp during the next authorized task change.
+
 ### Testing And Closeout Workflow
 
 - Plan validation while writing or refining the task. Select only relevant test types, which may include unit, feature, integration, browser/end-to-end, responsive, accessibility, localization, security, and regression checks. Codex performs the approved checks. Browser automation is required when browser or UI behavior is in scope and the needed browser access is available; it is not required for documentation-only work.
-- The implementation-stage handshake must normally disclose the complete closeout bundle: the ClickUp closeout comment, status change to the list's closed status, staging only approved files, the commit target and message convention, and the non-force push target. This avoids a second approval at closure.
-- When Hasan explicitly asks to close the task, execute the already approved closeout bundle immediately after required validation: post the closeout comment, set the task to the closed status, commit only the approved task files with the task ID in the commit message, and push the approved branch. Do not request another approval when the active named stage already covers these exact actions and no material scope change occurred.
+- The implementation-stage handshake must normally disclose the complete closeout bundle: the ClickUp closeout comment and its GitHub mirror, the ClickUp closed-status change and matching GitHub Issue closure, staging only approved files, the commit target and message convention, and the non-force push target. This avoids a second approval at closure.
+- When Hasan explicitly asks to close the task, execute the already approved closeout bundle immediately after required validation: post the ClickUp closeout comment and mirror it to GitHub; set the ClickUp task to the closed status and close its GitHub Issue; commit only the approved task files with the task ID in the commit message; and push the approved branch. Do not request another approval when the active named stage already covers these exact actions and no material scope change occurred.
 - Never include unrelated working-tree changes, force-push, invent a remote or branch, or close a task when required validation or the closeout comment is incomplete. If any closeout step fails, stop, report the exact completed and incomplete state, and do not silently retry an uncertain remote mutation.
 
 - In local Codex, use only the existing **`clickup_local_core`** MCP server (`mcp__clickup_local_core__` tools) for all Saffna ClickUp reads, searches, comments, and authorized mutations. This routing rule takes precedence over generic ClickUp plugin or connector references.
