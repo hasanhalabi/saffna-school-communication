@@ -2,9 +2,9 @@
 
 An inbound interaction crosses from a browser or later external client into the Saffna platform boundary. The planned browser-to-Laravel HTTP API belongs here.
 
-Every route under `/api/*` requires an authenticated Laravel browser session, including the fallback for unknown API paths. Approved application endpoints are versioned under `/api/v1/*`. The login page and `POST /login` sit outside `/api/*`; they are the only implemented unauthenticated application interaction. `POST /logout` also sits outside `/api/*` and requires the active session. `GET /api/v1/me` returns the authenticated user's current session identity and explicit access context. Public registration, public password recovery, public account bootstrap, token authentication, cross-origin access, and anonymous business/data API actions are excluded.
+Every route under `/api/*` requires an authenticated Laravel browser session, including the fallback for unknown API paths. Approved application endpoints are versioned under `/api/v1/*`. The login page and `POST /login` sit outside `/api/*`; they are the only implemented unauthenticated application interaction. `POST /logout` also sits outside `/api/*` and requires the active session. `GET /api/v1/me` returns the authenticated user's current session identity and explicit access context. `PATCH /api/v1/account/password` changes the authenticated user's own password. Public registration, public password recovery, public account bootstrap, token authentication, cross-origin access, and anonymous business/data API actions are excluded.
 
-The browser and Laravel application use a same-origin session with Laravel CSRF protection. Multiple devices may hold sessions. Inactive sessions expire after 120 minutes, Laravel's remember-me behavior remains available, and account disable revokes an existing session on its next request. Later administrative password-reset behavior must revoke all existing sessions. Login is limited to five attempts per minute for each normalized email-and-IP combination.
+The browser and Laravel application use a same-origin session with Laravel CSRF protection. Multiple devices may hold sessions. Inactive sessions expire after 120 minutes, Laravel's remember-me behavior remains available, and account disable revokes an existing session on its next request. Later administrative password-reset behavior must revoke all existing sessions. Own-password change keeps the current session authenticated and regenerates its session identifier and CSRF token. Login is limited to five attempts per minute for each normalized email-and-IP combination.
 
 ## Implemented Identity Operations
 
@@ -14,8 +14,9 @@ The browser and Laravel application use a same-origin session with Laravel CSRF 
 | `POST /login` | Guest | Accepts `email`, `password`, and optional boolean `remember`; regenerates the session after valid active-account credentials |
 | `POST /logout` | Required | Invalidates the session, regenerates the CSRF token, and returns `authenticated: false` |
 | `GET /api/v1/me` | Required | Returns the current user's ID, name, email, fixed group code, status, preferred language, temporary-password flag, and explicit permission strings |
+| `PATCH /api/v1/account/password` | Required | Accepts `current_password`, policy-compliant `password`, and matching `password_confirmation`; changes only the current user's password, clears the temporary-password flag, regenerates session security state, and returns no password |
 
-Invalid credentials and disabled accounts return the same localized `invalid_credentials` response. Login and API JSON respect Arabic or English from `Accept-Language`. Session expiry returns `401` and a refreshed CSRF token so the same page can safely return to login.
+Invalid credentials and disabled accounts return the same localized `invalid_credentials` response. Login and API JSON respect Arabic or English from `Accept-Language`. Session expiry returns `401` and a refreshed CSRF token so the same page can safely return to login. A temporary-password account may call current-session inspection and own-password change; other API actions return `409 password_change_required` until the change succeeds.
 
 ## Shared JSON Contract
 
@@ -26,13 +27,13 @@ Protected API responses use JSON. Error responses carry a stable machine-readabl
 | `401` | Missing, invalid, or expired authenticated session |
 | `403` | Authenticated user lacks the required permission or data access |
 | `404` | Requested record is not available to the permitted scope |
-| `409` | Valid request conflicts with current record state or uniqueness |
+| `409` | Valid request conflicts with current record state or requires completion of the temporary-password change |
 | `419` | The same-origin CSRF token is missing, invalid, or expired |
 | `422` | Request fields fail validation |
 | `429` | Request or login throttling limit reached |
 | `500` | Unexpected server failure without exposing internal or sensitive details |
 
-Successful JSON responses contain `data` and `request_id`. Error JSON contains `code`, localized `message`, field-level `errors`, and `request_id`. Unknown API paths return `401` before authentication and the stable `404 not_found` response after authentication.
+Successful JSON responses contain `data` and `request_id`. Error JSON contains `code`, localized `message`, field-level `errors`, and `request_id`. Unknown API paths return `401` before authentication, `409 password_change_required` for an authenticated account that must change its password, and the stable `404 not_found` response after the account is eligible to continue.
 
 User Management collections use page-based pagination with page, page size, total rows, and total pages. The default page size is 25. API controllers validate transport shape, authenticate and authorize the request, call the owning business service, and format the HTTP response. They do not own business rules, transactions, or persistence.
 

@@ -29,6 +29,17 @@ export class SaffnaApiClient {
         });
     }
 
+    changePassword(currentPassword, password, passwordConfirmation) {
+        return this.request('/api/v1/account/password', {
+            method: 'PATCH',
+            body: {
+                current_password: currentPassword,
+                password,
+                password_confirmation: passwordConfirmation,
+            },
+        });
+    }
+
     logout() {
         return this.request('/logout', { method: 'POST' });
     }

@@ -2,7 +2,7 @@
 
 This directory contains Saffna's only current deployable: a Laravel 12 web application. It uses Laravel Framework `12.72.0`, SQLite for Local DEV, native JavaScript Web Components, Bootstrap `5.3.9`, and Font Awesome Free `7.3.1`.
 
-Identity and access are implemented. The root URL serves the Arabic/English login and current-session shell. `POST /login` and `POST /logout` use the Laravel browser session, and every route under `/api/*` requires that session. User administration and the other product modules require later approved stages.
+Identity and access are implemented. The root URL serves the Arabic/English login and current-session shell. `POST /login` and `POST /logout` use the Laravel browser session, every route under `/api/*` requires that session, and `PATCH /api/v1/account/password` changes the authenticated user's own password. A temporary-password account must complete that form before using other protected API actions. User administration and the other product modules require later approved stages.
 
 ## Runtime boundaries
 
@@ -39,6 +39,8 @@ php artisan saffna:provision-super-admin
 ```
 
 The command runs only when `APP_ENV=local`, requires an empty user table, creates the fixed `support@hasanhalabi.com` Super Admin, and prints its generated temporary password once. Do not copy that password into source, logs, task text, or documentation.
+
+After signing in with a temporary password, the bilingual session interface requires the current temporary password, a policy-compliant new password, and matching confirmation. A successful change clears the temporary-password flag, regenerates the session and CSRF token, and records an audit event without either password.
 
 `.env`, `database/database.sqlite`, `vendor/`, `node_modules/`, compiled assets, caches, and logs are local state and are not committed. Local DEV uses `Asia/Amman`, Arabic as the primary application locale, English as the fallback locale, and the database file at `apps/web/database/database.sqlite` when `DB_DATABASE` is unset.
 

@@ -8,11 +8,19 @@ export class SaffnaIdentityApp extends HTMLElement {
         this.api = new SaffnaApiClient(this.locale);
         this.state = 'loading';
         this.user = null;
+        this.notice = null;
         this.sessionTimer = null;
     }
 
     connectedCallback() {
-        this.addEventListener('saffna-login-success', () => this.loadSession());
+        this.addEventListener('saffna-login-success', () => {
+            this.notice = null;
+            this.loadSession();
+        });
+        this.addEventListener('saffna-password-change-success', () => {
+            this.notice = 'passwordChanged';
+            this.loadSession();
+        });
         this.addEventListener('saffna-logout-success', () => this.showLogin());
         this.addEventListener('saffna-session-expired', () => this.showLogin());
         this.render();
@@ -56,6 +64,7 @@ export class SaffnaIdentityApp extends HTMLElement {
     showLogin() {
         this.stopSessionTimer();
         this.user = null;
+        this.notice = null;
         this.state = 'guest';
         this.render();
     }
@@ -130,7 +139,7 @@ export class SaffnaIdentityApp extends HTMLElement {
         if (this.state === 'authenticated') {
             const panel = document.createElement('saffna-session-panel');
             content.append(panel);
-            panel.configure(this.api, this.locale, this.user);
+            panel.configure(this.api, this.locale, this.user, this.notice);
             return;
         }
 

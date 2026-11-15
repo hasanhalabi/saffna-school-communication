@@ -1,9 +1,9 @@
 # Saffna Project Structure
 
-**Status:** Active runtime and identity/access structure
+**Status:** Active runtime and identity/access structure with own-password change
 **Owner:** Hasan, requesting product owner  
 **Last reviewed:** 2026-11-15
-**Approval/task:** Direct request; Stage SAFFNA-FND-001; Stage SAFFNA-RUNTIME-FOUNDATION-001-R1; Stage SAFFNA-IDENTITY-ACCESS-001-R2; ClickUp task `z8uq9mfg45`
+**Approval/task:** Direct request; Stage SAFFNA-FND-001; Stage SAFFNA-RUNTIME-FOUNDATION-001-R1; Stage SAFFNA-IDENTITY-ACCESS-001-R2; Stage SAFFNA-IDENTITY-PASSWORD-CHANGE-001-R1; ClickUp task `z8uq9mfg45`
 
 ## Structural Principle
 
@@ -57,9 +57,9 @@ Each artifact folder contains the files indexed by `artifacts/README.md`. The ru
 | Path | Owner and purpose | Deployment boundary |
 | --- | --- | --- |
 | `apps/web/` | Saffna Laravel 12 web application, frontend build, SQLite connection, and identity/access runtime | One deployable; only current runtime path |
-| `apps/web/app/Business/` | Project-owned PHP business and persistence classes | Audit recorder, fixed permission matrix, and temporary-password generator implemented; User Management services pending |
-| `apps/web/app/Http/Controllers/Api/` | HTTP API transport/controllers | Protected current-user endpoint implemented; User Management endpoints pending |
-| `apps/web/resources/js/components/` | Native JavaScript Web Components | Login and session components implemented; User Management components pending |
+| `apps/web/app/Business/` | Project-owned PHP business and persistence classes | Audit recorder, fixed permission matrix, temporary-password generator, and own-password changer implemented; User Management services pending |
+| `apps/web/app/Http/Controllers/Api/` | HTTP API transport/controllers | Protected current-user and own-password endpoints implemented; User Management endpoints pending |
+| `apps/web/resources/js/components/` | Native JavaScript Web Components | Login, session, and own-password components implemented; User Management components pending |
 
 Project-authored PHP class and JavaScript component filenames use the `Saffna` prefix. Framework-required filenames keep Laravel's required names. Vite builds locally installed Bootstrap and Font Awesome assets. Identity routing is implemented; User Management and later feature routing remain pending.
 

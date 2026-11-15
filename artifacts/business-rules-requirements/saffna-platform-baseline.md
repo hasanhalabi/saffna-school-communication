@@ -3,7 +3,7 @@
 **Status:** Approved platform foundation with identity/access implemented; User Management operations and later modules remain unresolved
 **Owner:** Hasan, requesting product owner  
 **Last reviewed:** 2026-11-15
-**Approval/task:** Direct request; foundation documentation approved as Stage SAFFNA-FND-001; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; Stage SAFFNA-IDENTITY-ACCESS-001-R2; ClickUp task `z8uq9mfg45`
+**Approval/task:** Direct request; foundation documentation approved as Stage SAFFNA-FND-001; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; Stage SAFFNA-IDENTITY-ACCESS-001-R2; Stage SAFFNA-IDENTITY-PASSWORD-CHANGE-001-R1; ClickUp task `z8uq9mfg45`
 
 ## Purpose And Scope
 
@@ -23,7 +23,7 @@ Saffna is intended to enable communication within one school among students, tea
 - `REQ-PLATFORM-010`: SQLite is the selected Saffna database. Data access must avoid intentional SQLite-only coupling so another developer can later adapt the application to another Laravel-supported database. That conversion and its compatibility testing are outside current Saffna scope.
 - `REQ-PLATFORM-011`: Before adding a project-owned function or class, implementation checks for an existing owner and reusable behavior. Shared Arabic name normalization and approved identifier validation belong in reusable business services, not duplicated API or UI code.
 - `REQ-PLATFORM-012`: Saffna serves one school. Multiple-school tenancy, organization switching, and cross-school data boundaries are not planned.
-- `REQ-PLATFORM-013`: Passwords contain at least 12 characters, including uppercase letters, lowercase letters, and numbers; symbols are optional. Temporary passwords must change at the next login. Repeated login attempts are throttled.
+- `REQ-PLATFORM-013`: Passwords contain at least 12 characters, including uppercase letters, lowercase letters, and numbers; symbols are optional. Temporary passwords must change at the next login through a form that verifies the current password, accepts a different compliant new password, and requires matching confirmation. Until that succeeds, the account may inspect its session, change its own password, or log out but may not use other protected API actions. Repeated login attempts are throttled.
 - `REQ-PLATFORM-014`: Multiple devices may remain signed in. Inactive sessions expire after 120 minutes, Laravel's remember-me behavior is available, and an administrative password reset or account disable revokes existing sessions.
 - `REQ-PLATFORM-015`: Only the Super Admin creates users and assigns or changes their fixed group. Admin users may manage existing Teacher, Parent, and Student accounts. Accounts are disabled or reactivated rather than deleted, no user impersonation is allowed, and the final active Super Admin cannot be disabled or demoted.
 - `REQ-PLATFORM-016`: Custom Saffna frontend behavior uses native Web Components, locally installed Bootstrap 5, and locally hosted Font Awesome Free. React, Vue, Livewire, Tailwind, and other frontend frameworks are excluded.
@@ -55,9 +55,9 @@ These decisions block relevant implementation stages, not this documentation fou
 | --- | --- | --- |
 | Web application | One Laravel deployable; identity/access implemented and four modules named | Architecture decision and future module rules |
 | Data | SQLite identity schema, fixed groups, and audit records implemented | `artifacts/database/` |
-| API | Session login/logout and protected current-user API implemented | `artifacts/integrations-inbound/` |
+| API | Session login/logout plus protected current-user and own-password APIs implemented | `artifacts/integrations-inbound/` |
 | Security/privacy | Five fixed user groups and initial User Management matrix enforced; student/family privacy remains unresolved | `artifacts/security/` |
-| Design/localization | Arabic RTL and English LTR login/session UI implemented for current stable Google Chrome | `artifacts/design-language/` |
+| Design/localization | Arabic RTL and English LTR login/session/password UI implemented for current stable Google Chrome | `artifacts/design-language/` |
 | Operations | Remote targets and release states unresolved | `artifacts/deployment-operations/` |
 | Future mobile | Possible future API consumer | New approved stage if adopted |
 
@@ -73,3 +73,4 @@ These decisions block relevant implementation stages, not this documentation fou
 | 2026-11-15 | Added Laravel User reuse, Super Admin bootstrap, fully protected API, one-group authorization, database portability, and reuse-first requirements | SAFFNA-ARCH-PLAN-001-R1, `z8uq9mfg45` |
 | 2026-11-15 | Defined email login, session and password rules, fixed groups, User Management permissions, API conventions, identity data, and native Bootstrap/Web Component UI direction | SAFFNA-FOUNDATION-DEFS-001, `z8uq9mfg45` |
 | 2026-11-15 | Implemented secure provisioning, session authentication, the protected current-user API, fixed permission enforcement, and the Chrome-only bilingual login/session UI | SAFFNA-IDENTITY-ACCESS-001-R2, `z8uq9mfg45` |
+| 2026-11-15 | Implemented required and voluntary own-password changes, required-state API blocking, audit recording, and the bilingual Chrome form | SAFFNA-IDENTITY-PASSWORD-CHANGE-001-R1, `z8uq9mfg45` |

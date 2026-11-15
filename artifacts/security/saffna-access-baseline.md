@@ -3,20 +3,21 @@
 **Status:** Authentication and fixed User Management authorization foundation implemented; later module permissions unresolved
 **Owner:** Hasan, requesting product owner  
 **Last reviewed:** 2026-11-15
-**Approval/task:** Direct request; Stage SAFFNA-FND-001; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; Stage SAFFNA-IDENTITY-ACCESS-001-R2; ClickUp task `z8uq9mfg45`
+**Approval/task:** Direct request; Stage SAFFNA-FND-001; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; Stage SAFFNA-IDENTITY-ACCESS-001-R2; Stage SAFFNA-IDENTITY-ACCESS-LOCAL-SUPER-ADMIN-001-R2; Stage SAFFNA-IDENTITY-PASSWORD-CHANGE-001-R1; ClickUp task `z8uq9mfg45`
 
 ## Confirmed Boundary
 
 The Laravel application is the identity-owning runtime. Saffna extends Laravel's application-owned `User` model instead of building a parallel identity system. The approved user groups are Super Admin, Admin user, Teacher, Parent, and Student; each user has one fixed group. Classes are not user groups. Email is required, unique, and used for login; no username is added.
 
-Every route under `/api/*` requires an authenticated Laravel session, and approved application endpoints are versioned under `/api/v1/*`. The guest-only `POST /login` and session-protected `POST /logout` sit outside `/api/*`; `GET /api/v1/me` is protected. Saffna has no public registration, public password recovery, public account bootstrap, token authentication, cross-origin access, or anonymous business/data API. Static assets and the login page may be served without a session but do not expose school data or business actions.
+Every route under `/api/*` requires an authenticated Laravel session, and approved application endpoints are versioned under `/api/v1/*`. The guest-only `POST /login` and session-protected `POST /logout` sit outside `/api/*`; `GET /api/v1/me` and `PATCH /api/v1/account/password` are protected. Saffna has no public registration, public password recovery, public account bootstrap, token authentication, cross-origin access, or anonymous business/data API. Static assets and the login page may be served without a session but do not expose school data or business actions.
 
-The first Local DEV Super Admin can be created after migrations with the non-public `php artisan saffna:provision-super-admin` command. The command runs only in Local DEV, requires an empty user table, uses name `Saffna Super Admin` and email `support@hasanhalabi.com`, returns the generated temporary password once, and stores only its Laravel hash. The same controlled pattern applies to a future environment only after that environment is approved. Stage SAFFNA-IDENTITY-ACCESS-001-R2 tests this command in isolated databases and does not create the persistent Local DEV account.
+The first Local DEV Super Admin can be created after migrations with the non-public `php artisan saffna:provision-super-admin` command. The command runs only in Local DEV, requires an empty user table, uses name `Saffna Super Admin` and email `support@hasanhalabi.com`, returns the generated temporary password once, and stores only its Laravel hash. The same controlled pattern applies to a future environment only after that environment is approved. Stage SAFFNA-IDENTITY-ACCESS-LOCAL-SUPER-ADMIN-001-R2 created the persistent Local DEV account and kept the one-time password out of repository and task systems.
 
 ## Authentication And Session Rules
 
 - Passwords have at least 12 characters and contain uppercase letters, lowercase letters, and numbers. Symbols are optional.
-- Temporary passwords require a change at the next login.
+- Temporary passwords require a change at the next login. The user supplies the current temporary password, a different compliant new password, and matching confirmation. Current-session inspection, own-password change, and logout remain available while other protected API actions return `password_change_required`.
+- Successful own-password change clears the temporary-password flag, regenerates the current session and CSRF token, and keeps that session authenticated. It does not revoke other device sessions.
 - Login is limited to five attempts per minute for each normalized email-and-IP combination. The response does not reveal whether the account exists or is disabled.
 - Multiple devices may stay signed in. Inactive sessions expire after 120 minutes and Laravel's remember-me behavior remains available.
 - Disabling an account or administratively resetting its password revokes existing sessions.
@@ -45,7 +46,7 @@ The final active Super Admin cannot be disabled, demoted, or otherwise removed. 
 
 Administrative creation and reset show a temporary password once for authorized manual delivery. No email or SMS credential-delivery provider is approved. Reactivation requires a new temporary password and next-login change.
 
-Append-only audit storage and recording are implemented for Super Admin provisioning and failed authorization. Later User Management services must use the same recorder for account creation and changes, group changes, disable/reactivate, and administrative password reset. Audit records never include plaintext or hashed passwords and remain indefinitely until a later retention rule is approved.
+Append-only audit storage and recording are implemented for Super Admin provisioning, own-password change, and failed authorization. Later User Management services must use the same recorder for account creation and changes, group changes, disable/reactivate, and administrative password reset. Audit records never include plaintext or hashed passwords and remain indefinitely until a later retention rule is approved.
 
 ## Decisions Deferred To Later Modules Or Environments
 

@@ -1,13 +1,22 @@
 <?php
 
 use App\Http\Controllers\Api\SaffnaCurrentUserController;
+use App\Http\Controllers\Api\SaffnaOwnPasswordController;
 use App\Http\Middleware\SaffnaEnsureActiveAccount;
+use App\Http\Middleware\SaffnaRequirePasswordChange;
 use App\Http\Responses\SaffnaJsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['web', 'auth', SaffnaEnsureActiveAccount::class])->group(function (): void {
+Route::middleware([
+    'web',
+    'auth',
+    SaffnaEnsureActiveAccount::class,
+    SaffnaRequirePasswordChange::class,
+])->group(function (): void {
     Route::get('/v1/me', SaffnaCurrentUserController::class)->name('api.v1.me');
+    Route::patch('/v1/account/password', SaffnaOwnPasswordController::class)
+        ->name('api.v1.account.password.update');
 
     Route::any('{fallback}', fn (Request $request) => SaffnaJsonResponse::error(
         code: 'not_found',

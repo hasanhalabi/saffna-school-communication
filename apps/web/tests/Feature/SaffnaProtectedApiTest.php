@@ -51,4 +51,24 @@ class SaffnaProtectedApiTest extends TestCase
             ->assertNotFound()
             ->assertJsonPath('code', 'not_found');
     }
+
+    public function test_a_required_password_change_blocks_other_api_actions_but_allows_the_change_flow(): void
+    {
+        $user = User::factory()->inGroup(SaffnaUserGroupCode::Student)->create([
+            'must_change_password' => true,
+        ]);
+
+        $this->actingAs($user)
+            ->getJson('/api/v1/me')
+            ->assertOk()
+            ->assertJsonPath('data.user.must_change_password', true);
+
+        $this->getJson('/api/not-a-real-route')
+            ->assertStatus(409)
+            ->assertJsonPath('code', 'password_change_required');
+
+        $this->patchJson('/api/v1/account/password')
+            ->assertUnprocessable()
+            ->assertJsonPath('code', 'validation_failed');
+    }
 }

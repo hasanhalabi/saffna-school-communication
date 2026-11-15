@@ -22,15 +22,15 @@ The identity schema extends Laravel's application-owned `User` model and migrati
 
 - Use Laravel's normal auto-incrementing integer identifiers. Authorization never treats an identifier as a secret.
 - Keep the default identity fields `name`, unique `email`, hashed `password`, and Laravel's remember token. Email is the login identifier; there is no username field.
-- The implemented Saffna account fields are one required `user_group_id` relationship, indexed account status, preferred language, optional non-unique phone, and `must_change_password`.
+- The implemented Saffna account fields are one required `user_group_id` relationship, indexed account status, preferred language, optional non-unique phone, and `must_change_password`. A successful own-password change stores the new Laravel hash and clears `must_change_password` in one business-layer transaction.
 - Account status has `active` and `disabled` values. Accounts are not hard-deleted.
 - Migration-owned `user_groups` contains Super Admin, Admin user, Teacher, Parent, and Student. Each user has exactly one group. The permission matrix is implemented in application code, not in administrator-editable permission records.
 - Parent/student and teacher/class relationships are deferred to the later owning modules. They are not part of the identity foundation.
-- Append-only audit storage is implemented. Super Admin provisioning and failed authorization already use it; later User Management services must add account creation and changes, group changes, disable/reactivate, and administrative password reset. Plaintext and hashed passwords are prohibited from audit data.
+- Append-only audit storage is implemented. Super Admin provisioning, own-password change, and failed authorization use it; later User Management services must add account creation and changes, group changes, disable/reactivate, and administrative password reset. Plaintext and hashed passwords are prohibited from audit data.
 - Keep audit records indefinitely until a later retention rule is approved.
 - Use the configured application/server timezone for stored timestamps. Local DEV uses `Asia/Amman`. User-facing timestamps display through minutes without seconds or milliseconds.
 
-The first Local DEV Super Admin can be created once with `php artisan saffna:provision-super-admin`. It uses name `Saffna Super Admin` and unique email `support@hasanhalabi.com`; its generated temporary password is stored only as a Laravel hash and returned once. The implementation stage did not run this command against the persistent Local DEV database.
+The first Local DEV Super Admin can be created once with `php artisan saffna:provision-super-admin`. It uses name `Saffna Super Admin` and unique email `support@hasanhalabi.com`; its generated temporary password is stored only as a Laravel hash and returned once. Stage SAFFNA-IDENTITY-ACCESS-LOCAL-SUPER-ADMIN-001-R2 created this account in the ignored Local DEV database without recording the password in repository or task systems.
 
 This folder holds canonical entity/data definitions, data dictionary, ownership, sensitive-data classification, reviewed migration specifications, retention, backup/restore, compatibility, and recovery decisions. The runtime creates the empty identity schema and fixed reference groups. It creates no Saffna account, student data, or persistent Super Admin record by migration.
 

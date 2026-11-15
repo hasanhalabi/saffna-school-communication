@@ -31,6 +31,7 @@ class SaffnaFoundationConfigurationTest extends TestCase
         $this->assertContains('POST login', $routes);
         $this->assertContains('POST logout', $routes);
         $this->assertContains('GET|HEAD api/v1/me', $routes);
+        $this->assertContains('PATCH api/v1/account/password', $routes);
         $this->assertNotContains('POST register', $routes);
         $this->assertNotContains('POST forgot-password', $routes);
     }
