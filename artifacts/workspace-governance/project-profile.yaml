@@ -84,10 +84,31 @@ task_tracking:
         - "complete"
       observed_list_custom_fields: []
       permissions:
-        read: "disclosed-stage-action"
-        comment: "approval-required"
-        create: "approval-required"
+        read: "standing authorization for bounded Startup Task Resolution; otherwise disclosed-stage-action"
+        comment: "one standing-authorized chat-linkage comment; otherwise approval-required"
+        create: "one standing-authorized task after complete duplicate search finds no match; otherwise approval-required"
         mutate_fields: "approval-required"
+  chat_workflow:
+    direct_answer_requires_task: false
+    work_chat_requires_primary_task: true
+    multiple_chats_may_reuse_task: true
+    startup_task_resolution_requires_preliminary_approval: false
+    implementation_requires_named_stage_approval: true
+    task_linkage:
+      - "ClickUp task ID in Codex chat title"
+      - "One ClickUp linkage comment"
+    new_task_required_sections:
+      - "Objective"
+      - "Scope"
+      - "Acceptance criteria"
+      - "Relevant dependencies"
+      - "Automated-testing and validation strategy"
+    closeout_trigger: "Explicit product-owner request after an approved stage covers the exact closeout bundle"
+    closeout_order:
+      - "Post ClickUp closeout comment"
+      - "Set ClickUp task to the configured closed status"
+      - "Commit only approved files with the task ID"
+      - "Non-force push the approved branch"
 
 governance:
   minimum_confidence: 95
@@ -97,6 +118,10 @@ governance:
   external_actions_require_disclosure: true
   task_status_separate_from_approval: true
   task_backed_closeout_comment_required: true
+  standing_local_read_only_discovery: true
+  standing_startup_task_resolution: true
+  single_implementation_handshake_after_task_resolution: true
+  closeout_bundle_normally_preapproved_in_stage: true
   approved_deviations: []
 
 constraints:

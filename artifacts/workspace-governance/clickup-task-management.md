@@ -2,12 +2,14 @@
 
 **Status:** Active task-governance rule with dated list observation  
 **Owner:** Hasan, requesting product owner  
-**Last reviewed:** 2026-09-28  
-**Approval/task:** Direct request; Stage SAFFNA-FND-001 approved read-only list inspection; Stage SAFFNA-CLICKUP-001 approved local MCP routing
+**Last reviewed:** 2026-11-15
+**Approval/task:** Direct request; Stage SAFFNA-FND-001 approved read-only list inspection; Stage SAFFNA-CLICKUP-001 approved local MCP routing; ClickUp task `z8uq9mfg33`; Stage SAFFNA-GOV-CHAT-TASK-001-R1
 
 ## Configured Source Of Truth
 
 The [Saffna list](https://app.clickup.com/3668514/v/li/901821841766) in workspace `3668514` is the task source of truth for the current web application, its API and database work, documentation, and later release work unless the product owner maps a workstream elsewhere. Do not create local TODO, backlog, sprint, or follow-up artifacts. Stage SAFFNA-FND-001 is a direct request; no task ID was provided, so no task closeout comment is due for this stage.
+
+Every Codex chat that performs Saffna project work must resolve and link one primary task in this list before the implementation handshake. Multiple chats may reuse the same task when they serve the same outcome. A direct-answer chat that only provides information and makes no project change or implementation deliverable is exempt; if its scope becomes work, resolve its task before implementation planning continues.
 
 ## Dated Read-Only Observation
 
@@ -27,7 +29,7 @@ Do not rename or change statuses to enforce this interpretation. Confirm the lis
 - In local Codex, use only the existing **`clickup_local_core`** MCP server (`mcp__clickup_local_core__` tools) for all ClickUp reads, searches, comments, and authorized mutations concerning Saffna. This rule takes precedence over older generic ClickUp plugin or connector references in workspace guidance.
 - Do not use the Official ClickUp Plugin, hosted ClickUp MCP, or `mcp__codex_apps__clickup_*` tools. Do not fall back to Computer Use, browser or desktop automation, raw API calls, `curl`, or a separate ClickUp CLI. The local MCP itself communicates with ClickUp's normal REST API.
 - Reuse the user-level registration in `~/.codex/config.toml`, the installation at `/Users/hasanhalabi/dev/clickup-mcp-server`, and the Keychain-backed launcher at `/Users/hasanhalabi/.local/share/clickup-mcp-core/launch.py`. Do not add a duplicate workspace server or copy credentials into repository files, `.env`, task text, logs, or chat.
-- At the first approved ClickUp operation in a conversation, use `whoami` to confirm workspace **Eyadaty (`3668514`)** and the **core** profile. Scope work to the Saffna list `901821841766`; use `tree` if its identity needs resolving and `meta(scope: 901821841766)` for current statuses, assignees, and accepted values. The dated status observation above is not authoritative for later operations. Reuse verified identity unless the connection changes.
+- At the first ClickUp operation in a conversation, use `whoami` to confirm workspace **Eyadaty (`3668514`)** and the **core** profile. Scope work to the Saffna list `901821841766`; use `tree` if its identity needs resolving and `meta(scope: 901821841766)` for current statuses and accepted values. Startup Task Resolution supplies standing owner authorization for these bounded operations. The dated status observation above is not authoritative for later operations. Reuse verified identity unless the connection changes.
 - Use `find` for scoped searches and duplicate checks, `task` for task details, and `comment` for authorized comments. Include closed tasks and relevant subtasks when checking duplicates; incomplete search coverage does not prove that no matching task exists. Use `create`, `update`, and other local tools only within approved task-mutation scope, then verify the resulting task.
 - For an explicitly approved merge, use `merge` preview first, inspect its preservation notices, then execute with the returned `preview_token` and the same target and source IDs. Never retry an uncertain merge automatically or add a separate delete as cleanup.
 - For an approved attachment, stage only the intended file under `/Users/hasanhalabi/.local/share/clickup-mcp-core/uploads` when the stage also approves that outside-workspace file action. Use `attach`, verify the upload, then remove the temporary copy within that same approved scope.
@@ -37,14 +39,36 @@ Do not rename or change statuses to enforce this interpretation. Confirm the lis
 
 ## Authority And Task Rules
 
-- Read/search the configured list or a referenced task only when the action is disclosed for the stage; use `clickup_local_core` under the routing rule above.
-- Comments, task creation, and changes to status, description, dates, assignees, priority, tags, relationships, or fields require explicit named-stage scope. A task-backed stage must include the required closeout comment in its approved actions.
-- Before approved task creation, search for a matching existing task. Use outcome-oriented titles, such as `[Web] Result`.
+- Startup Task Resolution has standing owner authorization under the bounded workflow below. It does not require a preliminary stage approval and is not itself implementation approval.
+- Outside Startup Task Resolution, read/search the configured list or a referenced task only when the action is disclosed for the stage; always use `clickup_local_core` under the routing rule above.
+- Outside Startup Task Resolution, comments, task creation, and changes to status, description, dates, assignees, priority, tags, relationships, or fields require explicit named-stage scope. A task-backed stage must include the required closeout comment and should include the full closeout bundle in its approved actions.
+- Before any task creation, search for a matching existing task. Use outcome-oriented titles, such as `[Web] Result`.
 - Durable business rules live in canonical artifacts; ClickUp tasks link to them. Do not treat a task status, custom field, or assignee as stage approval or confidence evidence by itself.
-- Do not infer that the four product modules each need a new task. Task creation needs a separate approved action.
+- Do not infer that the four product modules each need a new task. Outside the conditional single creation allowed by Startup Task Resolution, task creation needs a separate approved action.
+
+## Startup Task Resolution
+
+At the start of each work chat, perform this sequence without requesting a separate preliminary approval:
+
+1. Run `whoami` and confirm the `core` profile and Eyadaty workspace `3668514`. Read current list metadata when needed.
+2. Search only list `901821841766`. Include closed tasks and relevant subtasks, and obtain enough coverage to support a duplicate decision. Read likely task details and comments when titles alone are insufficient.
+3. Reuse one clear matching task. Multiple Codex chats may link to it when they concern the same outcome.
+4. When complete search coverage finds no match, create exactly one task in the configured list. Give it an outcome-oriented title and a description containing the objective, scope, acceptance criteria, dependencies, and a proportionate automated-testing and validation strategy. Leave assignees, dates, priority, tags, relationships, custom fields, and status at their defaults unless a named stage separately authorizes them.
+5. Link the current Codex chat by adding the task ID to its title and posting one short task comment containing the chat title and the pending or approved stage ID when known. Do not create a public share URL merely to establish linkage.
+6. Verify the task and linkage comment, then include the exact task ID and ordinary HTTPS task link in the single implementation handshake.
+
+If multiple candidates could reasonably match, do not create another task. Ask one focused question only when the correct match cannot be determined from current evidence. If the local MCP fails, report the failure and do not change connectors. This standing workflow authorizes no implementation, task-status change, additional comment, or unrelated mutation.
+
+## Task Scope And Testing Strategy
+
+When creating or materially refining a task, plan validation at the same time as scope. The task must state which checks Codex will perform and why they fit the work. Possible checks include unit, feature, integration, browser/end-to-end, responsive, accessibility, localization, security, regression, data, and documentation validation; do not require irrelevant test types merely to fill a list.
+
+Browser automation is required when browser or UI behavior is in scope and the needed browser access is available. Documentation-only work uses proportionate document, syntax, and consistency checks instead. Tests and browser execution remain implementation actions and must appear in the named-stage handshake even though writing the strategy is part of task setup.
 
 ## Task-Backed Stage Start And Closeout
 
-For a task-backed stage, identify the exact task ID/link in the handshake. Read its current description, comments, status, and relevant fields through `clickup_local_core` after disclosed approval. Resolve conflicts with canonical artifacts before implementation. Obtain at least 95/100 confidence and explicit named-stage approval. Change fields only if that exact mutation is approved.
+For a task-backed stage, use Startup Task Resolution first, then identify the exact task ID/link in the single implementation handshake. Read its current description, comments, status, and relevant fields during resolution or under disclosed stage scope. Resolve conflicts with canonical artifacts before implementation. Obtain at least 95/100 confidence and explicit named-stage approval. Change fields only when the standing workflow or exact named-stage scope authorizes that mutation.
 
 Before declaring a task-backed stage complete, add the approved task comment with: stage ID; implemented behavior/files/artifacts; validation and results; unvalidated limits; deployment/data effects; and follow-up decisions. If the comment fails, stop connector attempts, provide copy-ready text in chat, and state that task-backed closeout remains incomplete.
+
+The implementation handshake should normally pre-authorize the closeout comment, status change to the list's current closed status, Git staging of only the approved files, a commit containing the task ID, and a non-force push to an exact branch and remote. When Hasan later explicitly requests task closure and no material scope change occurred, execute that approved bundle without another handshake in this order: post the closeout comment, set the task to the closed status, stage and commit only approved files, and push the approved branch. If a step fails, report the exact completed and incomplete state and do not silently retry an uncertain remote operation.
