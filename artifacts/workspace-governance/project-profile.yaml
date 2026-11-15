@@ -21,9 +21,10 @@ project:
 runtime_surfaces:
   - id: "web"
     role: "primary"
-    technology: "Laravel 12, PHP business classes, HTTP API, native JavaScript Web Components, SQLite"
+    technology: "Laravel Framework 12.72.0, PHP business classes, HTTP API, native JavaScript Web Components, Bootstrap 5.3.9, Font Awesome Free 7.3.1, SQLite"
     path: "apps/web"
     deployable: true
+    status: "runtime foundation installed; feature behavior pending"
     owner: "Saffna product owner; operational owner unresolved"
 
 source_strategy:
@@ -52,8 +53,8 @@ delivery:
 environments:
   - id: "local-dev"
     name: "Local DEV"
-    status: "defined"
-    purpose: "Local authoring workspace; runtime not installed"
+    status: "runtime foundation installed"
+    purpose: "Local authoring and runtime environment using apps/web/database/database.sqlite"
   - id: "server-dev-staging"
     name: "Server DEV/Staging"
     status: "unresolved"
@@ -159,5 +160,5 @@ open_decisions:
     question: "What are supported browsers, hosting targets, regions, and release completion states?"
     blocking_stage: "UI acceptance and deployment"
   - id: "OD-DATA-001"
-    question: "What SQLite version, entity model, backup, restore, retention, and migration approach are required?"
-    blocking_stage: "Database implementation and deployment"
+    question: "What final entity model, remote SQLite placement, backup, restore, and retention rules are required?"
+    blocking_stage: "Feature data implementation and deployment"

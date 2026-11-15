@@ -1,6 +1,18 @@
 # Saffna Database Governance
 
-SQLite is the selected data store for the planned single Laravel application. The Laravel application owns its connection and future executable migrations. PHP business classes are the intended direct database access layer; HTTP API controllers and Web Components do not query SQLite directly.
+SQLite is the Local DEV data store for the installed single Laravel application. Local validation uses SQLite CLI `3.51.0` with PHP `pdo_sqlite` and `sqlite3`. The Laravel application owns its connection and executable migrations. PHP business classes are the intended direct database access layer; HTTP API controllers and Web Components do not query SQLite directly.
+
+The default Local DEV database is the ignored file `apps/web/database/database.sqlite`. `DB_CONNECTION=sqlite` selects it, and leaving `DB_DATABASE` unset uses Laravel's `database_path('database.sqlite')`. A future environment may select another Laravel-supported driver through environment configuration without changing business classes; that does not certify compatibility.
+
+The installed baseline contains reviewed Laravel migrations for the approved User fields and session support, cache storage, and queued jobs. The unused Laravel email-verification field and public password-reset token table are excluded because those workflows are not approved. The migrations contain no Saffna feature data or real personal data. The reviewed Local DEV sequence is:
+
+```sh
+php artisan migrate
+php artisan migrate:rollback
+php artisan migrate
+```
+
+The final command leaves the empty Local DEV schema migrated. `.env`, the database file, journals, and write-ahead-log files remain uncommitted local state.
 
 Saffna data access must use Laravel migrations, Eloquent, query builder, and environment configuration without intentional SQLite-only coupling. Application-owned code must not use database triggers, stored procedures, raw vendor-specific SQL, database-specific functions, or vendor-specific schema types unless a later approved decision records the reason and impact. This structure gives another developer a clear path to adapt the application to another Laravel-supported database. MySQL conversion, operation, and compatibility testing are not Saffna deliverables.
 
@@ -20,6 +32,6 @@ The identity schema extends Laravel's application-owned `User` model and migrati
 
 The first Local DEV Super Admin will later be created with name `Saffna Super Admin` and unique email `support@hasanhalabi.com`. Its generated temporary password is stored only as a Laravel hash and returned once to the product owner.
 
-This folder will hold canonical entity/data definitions, data dictionary, ownership, sensitive-data classification, reviewed migration specifications, retention, backup/restore, compatibility, and recovery decisions. This definition stage creates no schema, migration, database file, connection, query, seed data, or Super Admin record.
+This folder holds canonical entity/data definitions, data dictionary, ownership, sensitive-data classification, reviewed migration specifications, retention, backup/restore, compatibility, and recovery decisions. The runtime foundation creates only Laravel's empty framework schema. It creates no Saffna account, seed data, student data, or Super Admin record.
 
-Before a database implementation stage, confirm the installed Laravel migration baseline, SQLite version and file placement, executable migration and rollback sequence, backup/restore, and environment separation. Student and family data protection and relationships for classes, assignments, and messages remain later module decisions. Review every migration and query for accidental SQLite-only coupling. Database inspection or execution needs separately disclosed approval with an exact target and environment.
+Before feature data or deployment stages, define the owning entity model, migration specification, remote database placement, backup/restore, and retention rules. Student and family data protection and relationships for classes, assignments, and messages remain later module decisions. Review every migration and query for accidental SQLite-only coupling. Database inspection or execution needs separately disclosed approval with an exact target and environment.

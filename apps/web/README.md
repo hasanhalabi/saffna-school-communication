@@ -1,9 +1,46 @@
 # Saffna Web Application
 
-This path is reserved for Saffna's only current deployable: a Laravel 12 web application. No Laravel source has been generated yet. The application will own its HTTP API, PHP business and persistence classes, native JavaScript Web Components, and SQLite database connection.
+This directory contains Saffna's only current deployable: a Laravel 12 web application. The installed foundation uses Laravel Framework `12.72.0`, SQLite for Local DEV, native JavaScript Web Components, Bootstrap `5.3.9`, and Font Awesome Free `7.3.1`.
 
-The planned internal separation is `app/Business/` for business and persistence classes, `app/Http/Controllers/Api/` for API transport, and `resources/js/components/` for Web Components. These are intended runtime paths, not directories created by the foundation. Project-authored PHP class and JavaScript component filenames will start with `Saffna`; Laravel-required filenames retain framework names. The API layer calls business classes, and Web Components call the API. Web Components never connect directly to SQLite.
+The foundation has no Saffna feature behavior yet. Authentication, protected API operations, user administration, and product modules require later approved stages. The root URL intentionally has no route until the approved authentication interface is implemented.
 
-Source strategy is greenfield. This path is one deployable boundary, not three independent services. Framework installation, exact dependencies, API contracts, authentication implementation, schema, and migrations require later approved stages.
+## Runtime boundaries
 
-Read the [project profile](../../artifacts/workspace-governance/project-profile.yaml), [architecture decision](../../artifacts/architecture-decisions/saffna-application-architecture.md), [business baseline](../../artifacts/business-rules-requirements/saffna-platform-baseline.md), [web interface baseline](../../artifacts/design-language/web-app/saffna-interface-baseline.md), and [security baseline](../../artifacts/security/saffna-access-baseline.md) before implementation. Cross-surface rules remain in those artifacts rather than this README.
+| Path | Ownership |
+| --- | --- |
+| `app/Business/` | Business rules, transactions, and Laravel-managed persistence |
+| `app/Http/Controllers/Api/` | HTTP transport that delegates to the business layer |
+| `resources/js/components/` | Native Web Components that call approved HTTP APIs |
+
+Project-authored PHP class and JavaScript component filenames use the `Saffna` prefix. Framework-required filenames keep their required names.
+
+## Local DEV requirements
+
+The installed and validated workstation versions are PHP `8.4.6`, Composer `2.9.2`, Node.js `22.13.0`, npm `11.1.0`, and SQLite `3.51.0`. PHP must provide `pdo_sqlite` and `sqlite3`.
+
+For a fresh checkout:
+
+```sh
+cd apps/web
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate
+npm ci
+npm run build
+php artisan test
+```
+
+`.env`, `database/database.sqlite`, `vendor/`, `node_modules/`, compiled assets, caches, and logs are local state and are not committed. Local DEV uses `Asia/Amman`, Arabic as the primary application locale, English as the fallback locale, and the database file at `apps/web/database/database.sqlite` when `DB_DATABASE` is unset.
+
+Run `php artisan migrate:rollback` followed by `php artisan migrate` to verify the current empty baseline can roll back and migrate again. Other Laravel-supported database drivers can be selected through environment configuration without changing business classes; compatibility with another database is not certified.
+
+## Governing sources
+
+- [Application architecture](../../artifacts/architecture-decisions/saffna-application-architecture.md)
+- [Database governance](../../artifacts/database/README.md)
+- [Inbound API contract](../../artifacts/integrations-inbound/README.md)
+- [Security baseline](../../artifacts/security/saffna-access-baseline.md)
+- [Web interface baseline](../../artifacts/design-language/web-app/saffna-interface-baseline.md)
+- [Deployment and operations](../../artifacts/deployment-operations/README.md)

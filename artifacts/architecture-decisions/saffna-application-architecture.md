@@ -1,9 +1,9 @@
 # ADR-0001: Saffna Application Architecture
 
-**Status:** Foundation, identity, access, and application-boundary direction approved; runtime installation pending
+**Status:** Runtime foundation installed; identity, access, and feature implementation pending
 **Decision owner:** Hasan, requesting product owner  
 **Date:** 2026-09-28; clarified 2026-11-15
-**Approval/task:** Direct request; Stage SAFFNA-FND-001 approved in the user message `proceed with implementation for Stage SAFFNA-FND-001`; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; ClickUp task `z8uq9mfg45`
+**Approval/task:** Direct request; Stage SAFFNA-FND-001 approved in the user message `proceed with implementation for Stage SAFFNA-FND-001`; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; Stage SAFFNA-RUNTIME-FOUNDATION-001-R1; ClickUp task `z8uq9mfg45`
 
 ## Context
 
@@ -12,6 +12,7 @@ Saffna starts as a greenfield, single-school communication web platform. The pro
 ## Decision
 
 - Use one deployable Laravel 12 application under `apps/web/`.
+- The installed baseline uses Laravel application skeleton `12.12.2`, Laravel Framework `12.72.0`, Bootstrap `5.3.9`, and Font Awesome Free `7.3.1`, with exact dependency versions locked.
 - Keep project-owned PHP business and persistence classes in a distinct `app/Business/` area, API controllers in `app/Http/Controllers/Api/`, and Web Components in `resources/js/components/` when runtime source is created.
 - The browser frontend communicates with the backend through the HTTP API. API transport code delegates business and SQLite operations to the PHP business layer.
 - Extend Laravel's application-owned `User` model and framework migration instead of creating a parallel user system. Use Laravel's default identity fields `name`, unique `email`, and hashed `password`; email is the login identifier and no username field is added.
@@ -38,11 +39,11 @@ Saffna starts as a greenfield, single-school communication web platform. The pro
 
 ## Consequences
 
-The API, business logic, UI, and persistence share one deployment but have separate code ownership. API access depends on a Laravel browser session, so a possible future mobile client will require its own approved authentication design. The future mobile option makes stable API contracts important; it does not establish a mobile requirement. Laravel installation, exact package versions, executable migrations, Super Admin creation, and deployment remain later-stage gates. Database portability is an architectural constraint, not a guarantee that an untested database change needs no work.
+The API, business logic, UI, and persistence share one deployment but have separate code ownership. API access depends on a Laravel browser session, so a possible future mobile client will require its own approved authentication design. The future mobile option makes stable API contracts important; it does not establish a mobile requirement. The Laravel foundation, exact baseline package versions, Local DEV SQLite connection, and executable framework migrations now exist. Super Admin creation, identity schema changes, application endpoints, and deployment remain later-stage gates. Database portability is an architectural constraint, not a guarantee that an untested database change needs no work.
 
 ## Validation And Reversal
 
-This foundation stage validates documentation consistency only. A later approved runtime stage must verify that Laravel 12 can be installed with the documented separation and filename convention. A change to independent deployables or another framework requires a superseding ADR and cross-surface review.
+Stage SAFFNA-RUNTIME-FOUNDATION-001-R1 verifies the installed Laravel version, framework boot, Local DEV SQLite migration rollback/reapply, frontend build, dependency inventory, and created layer boundaries. A change to independent deployables or another framework requires a superseding ADR and cross-surface review.
 
 ## Related Artifacts
 

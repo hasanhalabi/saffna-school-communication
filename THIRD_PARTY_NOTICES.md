@@ -1,9 +1,18 @@
 # Third-Party Notices
 
-**Inventory reviewed:** 28 September 2026.
+**Inventory reviewed:** 15 November 2026.
 
-The repository currently contains project-authored documentation and a placeholder for the planned web application. It does not include installed Laravel packages, vendored third-party code, fonts, icons, or other third-party assets. There are therefore no redistributed third-party files to list at this checkpoint.
+The root [0BSD license](LICENSE) applies to Hasan Halabi's original repository material. It does not replace the licenses of third-party source, packages, fonts, or icons.
 
-The root [0BSD license](LICENSE) applies to Hasan Halabi’s original repository material. It does not change the license of any third-party material added later. Before redistributing a dependency or asset, record its name, version, source, license, included paths, and required copyright or attribution notices here, and preserve the upstream license files where required. This includes planned Laravel dependencies, Bootstrap, and Font Awesome Free if and when their files are included.
+## Installed foundation
 
-The repository license also does not determine reuse rights for YouTube videos, music, stock media, or other material published outside this repository.
+| Component | Installed version | Source | License and repository use |
+| --- | ---: | --- | --- |
+| Laravel application skeleton | 12.12.2 | `laravel/laravel` through Packagist | MIT; generated foundation files are under `apps/web/` |
+| Laravel Framework | 12.72.0 | `laravel/framework` through Packagist | MIT; installed under ignored `apps/web/vendor/` |
+| Bootstrap | 5.3.9 | `bootstrap` through npm | MIT; source is under ignored `apps/web/node_modules/` and compiled output remains ignored |
+| Font Awesome Free | 7.3.1 | `@fortawesome/fontawesome-free` through npm | CC BY 4.0, SIL OFL 1.1, and MIT as declared by the package; source is under ignored `apps/web/node_modules/` and compiled output remains ignored |
+
+Exact PHP dependency versions and metadata are recorded in `apps/web/composer.lock`. Exact JavaScript and build dependency versions are recorded in `apps/web/package-lock.json`. Composer and npm dependency directories are not committed. The generated Laravel skeleton remains subject to its upstream MIT terms; project-authored changes remain covered by the repository's 0BSD license where those rights are separable.
+
+Before adding or redistributing another dependency or asset, record its exact version, source, license, included paths, and any required notice here. The repository license does not determine reuse rights for YouTube videos, music, stock media, or other material published outside this repository.

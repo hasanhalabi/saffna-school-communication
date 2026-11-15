@@ -1,15 +1,15 @@
 # Saffna Project Structure
 
-**Status:** Active foundation structure  
+**Status:** Active runtime foundation structure
 **Owner:** Hasan, requesting product owner  
-**Last reviewed:** 2026-09-28  
-**Approval/task:** Direct request; Stage SAFFNA-FND-001
+**Last reviewed:** 2026-11-15
+**Approval/task:** Direct request; Stage SAFFNA-FND-001; Stage SAFFNA-RUNTIME-FOUNDATION-001-R1; ClickUp task `z8uq9mfg45`
 
 ## Structural Principle
 
 Saffna has one current deployable application. Runtime source and canonical documentation are separate. The future Laravel application will have distinct business/persistence, API transport, and Web Component areas within that one deployable. A possible mobile application is not represented by a folder until adopted.
 
-## Generated Tree
+## Runtime Foundation Tree
 
 ```text
 saffna-school-communication/
@@ -18,6 +18,17 @@ saffna-school-communication/
 ├── .gitignore
 ├── apps/
 │   └── web/
+│       ├── app/Business/
+│       ├── app/Http/Controllers/Api/
+│       ├── config/
+│       ├── database/migrations/
+│       ├── resources/js/components/
+│       ├── routes/
+│       ├── tests/
+│       ├── composer.json
+│       ├── composer.lock
+│       ├── package.json
+│       ├── package-lock.json
 │       └── README.md
 └── artifacts/
     ├── README.md
@@ -35,18 +46,18 @@ saffna-school-communication/
     └── workspace-governance/
 ```
 
-Each artifact folder contains the files indexed by `artifacts/README.md`. The tree shows ownership, not a claim that Laravel source exists.
+Each artifact folder contains the files indexed by `artifacts/README.md`. The runtime tree shows the installed Laravel foundation and its approved layer boundaries, not completed Saffna feature behavior.
 
 ## Runtime Placement
 
 | Path | Owner and purpose | Deployment boundary |
 | --- | --- | --- |
-| `apps/web/` | Saffna Laravel 12 web application, API, frontend, and SQLite access | One deployable; only current runtime path |
-| `apps/web/app/Business/` | Future project-owned PHP business and persistence classes | Part of `apps/web/`; not created in foundation |
-| `apps/web/app/Http/Controllers/Api/` | Future HTTP API transport/controllers | Part of `apps/web/`; not created in foundation |
-| `apps/web/resources/js/components/` | Future native JavaScript Web Components | Part of `apps/web/`; not created in foundation |
+| `apps/web/` | Installed Saffna Laravel 12 web application foundation, frontend build, and SQLite connection | One deployable; only current runtime path |
+| `apps/web/app/Business/` | Project-owned PHP business and persistence classes | Created boundary; feature classes pending |
+| `apps/web/app/Http/Controllers/Api/` | HTTP API transport/controllers | Created boundary; application endpoints pending |
+| `apps/web/resources/js/components/` | Native JavaScript Web Components | Created boundary; feature components pending |
 
-Project-authored PHP class and JavaScript component filenames use the `Saffna` prefix. Framework-required filenames keep Laravel's required names. Routing and build details are later runtime decisions.
+Project-authored PHP class and JavaScript component filenames use the `Saffna` prefix. Framework-required filenames keep Laravel's required names. Vite builds locally installed Bootstrap and Font Awesome assets; feature routing remains a later decision.
 
 ## Runtime And Documentation Boundary
 

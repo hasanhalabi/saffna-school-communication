@@ -27,7 +27,7 @@ The planned application uses one Laravel 12 web application with an HTTP API, PH
 
 ## Current checkpoint
 
-This repository currently contains the **governed project foundation** and a placeholder for the web application. It does **not** yet contain an installed Laravel application, running API, database schema, or deployable release. Follow the course and repository history as later checkpoints are completed; do not treat planned features as finished software.
+This repository currently contains the **governed project foundation** and an installed Laravel 12 runtime foundation under `apps/web/`. Local DEV uses SQLite and has separate business, API controller, and native Web Component areas. It does **not** yet contain Saffna authentication, protected API operations, product features, real data, or a deployable release. Follow the course and repository history as later checkpoints are completed; do not treat planned features as finished software.
 
 Start with:
 
@@ -35,7 +35,7 @@ Start with:
 2. [Artifact index](artifacts/README.md) — where the project’s decisions and specifications live.
 3. [Project profile](artifacts/workspace-governance/project-profile.yaml) — current scope and open decisions.
 4. [Product baseline](artifacts/business-rules-requirements/saffna-platform-baseline.md) and [architecture decision](artifacts/architecture-decisions/saffna-application-architecture.md) — what is currently approved for the product and its technical direction.
-5. [Web application placeholder](apps/web/README.md) — the planned runtime location.
+5. [Web application](apps/web/README.md) — Local DEV setup, runtime boundaries, and current limits.
 
 The educational endpoint is a locally runnable, tested, and documented application. This repository is not a production-ready school system, and it must not be used with real student or family data without separate security, privacy, operational, and deployment work.
 
