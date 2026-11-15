@@ -4,7 +4,7 @@ SQLite is the Local DEV data store for the installed single Laravel application.
 
 The default Local DEV database is the ignored file `apps/web/database/database.sqlite`. `DB_CONNECTION=sqlite` selects it, and leaving `DB_DATABASE` unset uses Laravel's `database_path('database.sqlite')`. A future environment may select another Laravel-supported driver through environment configuration without changing business classes; that does not certify compatibility.
 
-The installed baseline contains reviewed Laravel migrations for the approved User fields and session support, cache storage, and queued jobs. The unused Laravel email-verification field and public password-reset token table are excluded because those workflows are not approved. The migrations contain no Saffna feature data or real personal data. The reviewed Local DEV sequence is:
+The installed migrations contain Laravel session support, cache storage, queued jobs, and the Saffna identity foundation. Migration `2026_11_15_000003_create_saffna_identity_foundation.php` creates the five fixed `user_groups` rows, adds the approved account fields to `users`, and creates append-only `audit_records`. It refuses to extend a user table that already contains accounts. The unused Laravel email-verification field and public password-reset token table remain excluded. The migrations contain no real personal data. The reviewed Local DEV sequence is:
 
 ```sh
 php artisan migrate
@@ -22,16 +22,16 @@ The identity schema extends Laravel's application-owned `User` model and migrati
 
 - Use Laravel's normal auto-incrementing integer identifiers. Authorization never treats an identifier as a secret.
 - Keep the default identity fields `name`, unique `email`, hashed `password`, and Laravel's remember token. Email is the login identifier; there is no username field.
-- Add only the approved Saffna account fields: one fixed user-group relationship, account status, preferred language, optional non-unique phone, and `must_change_password`.
+- The implemented Saffna account fields are one required `user_group_id` relationship, indexed account status, preferred language, optional non-unique phone, and `must_change_password`.
 - Account status has `active` and `disabled` values. Accounts are not hard-deleted.
-- Use a fixed `user_groups` reference owned by migrations for Super Admin, Admin user, Teacher, Parent, and Student. Each user has exactly one group. The permission matrix is defined in application code, not in administrator-editable permission records.
+- Migration-owned `user_groups` contains Super Admin, Admin user, Teacher, Parent, and Student. Each user has exactly one group. The permission matrix is implemented in application code, not in administrator-editable permission records.
 - Parent/student and teacher/class relationships are deferred to the later owning modules. They are not part of the identity foundation.
-- Add append-only audit records for account creation and changes, group changes, disable/reactivate, administrative password reset, failed authorization, and Super Admin provisioning. Never record plaintext or hashed passwords in audit data.
+- Append-only audit storage is implemented. Super Admin provisioning and failed authorization already use it; later User Management services must add account creation and changes, group changes, disable/reactivate, and administrative password reset. Plaintext and hashed passwords are prohibited from audit data.
 - Keep audit records indefinitely until a later retention rule is approved.
 - Use the configured application/server timezone for stored timestamps. Local DEV uses `Asia/Amman`. User-facing timestamps display through minutes without seconds or milliseconds.
 
-The first Local DEV Super Admin will later be created with name `Saffna Super Admin` and unique email `support@hasanhalabi.com`. Its generated temporary password is stored only as a Laravel hash and returned once to the product owner.
+The first Local DEV Super Admin can be created once with `php artisan saffna:provision-super-admin`. It uses name `Saffna Super Admin` and unique email `support@hasanhalabi.com`; its generated temporary password is stored only as a Laravel hash and returned once. The implementation stage did not run this command against the persistent Local DEV database.
 
-This folder holds canonical entity/data definitions, data dictionary, ownership, sensitive-data classification, reviewed migration specifications, retention, backup/restore, compatibility, and recovery decisions. The runtime foundation creates only Laravel's empty framework schema. It creates no Saffna account, seed data, student data, or Super Admin record.
+This folder holds canonical entity/data definitions, data dictionary, ownership, sensitive-data classification, reviewed migration specifications, retention, backup/restore, compatibility, and recovery decisions. The runtime creates the empty identity schema and fixed reference groups. It creates no Saffna account, student data, or persistent Super Admin record by migration.
 
 Before feature data or deployment stages, define the owning entity model, migration specification, remote database placement, backup/restore, and retention rules. Student and family data protection and relationships for classes, assignments, and messages remain later module decisions. Review every migration and query for accidental SQLite-only coupling. Database inspection or execution needs separately disclosed approval with an exact target and environment.

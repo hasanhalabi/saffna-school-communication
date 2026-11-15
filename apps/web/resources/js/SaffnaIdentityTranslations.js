@@ -1,0 +1,56 @@
+export const saffnaIdentityTranslations = {
+    ar: {
+        brand: 'صفّنا',
+        subtitle: 'منصة التواصل المدرسي',
+        switchLanguage: 'English',
+        loading: 'جارٍ التحقق من الجلسة…',
+        email: 'البريد الإلكتروني',
+        password: 'كلمة المرور',
+        remember: 'تذكرني',
+        signIn: 'تسجيل الدخول',
+        signingIn: 'جارٍ تسجيل الدخول…',
+        signOut: 'تسجيل الخروج',
+        signingOut: 'جارٍ تسجيل الخروج…',
+        welcome: 'مرحباً',
+        currentSession: 'الجلسة الحالية',
+        temporaryPassword: 'يجب تغيير كلمة المرور المؤقتة قبل متابعة استخدام المنصة.',
+        sessionError: 'تعذر التحقق من الجلسة. حاول مرة أخرى.',
+        networkError: 'تعذر الاتصال بالتطبيق. حاول مرة أخرى.',
+        groups: {
+            super_admin: 'المشرف الأعلى',
+            admin_user: 'المشرف',
+            teacher: 'المعلم',
+            parent: 'ولي الأمر',
+            student: 'الطالب',
+        },
+    },
+    en: {
+        brand: 'Saffna',
+        subtitle: 'School communication platform',
+        switchLanguage: 'العربية',
+        loading: 'Checking your session…',
+        email: 'Email',
+        password: 'Password',
+        remember: 'Remember me',
+        signIn: 'Sign in',
+        signingIn: 'Signing in…',
+        signOut: 'Sign out',
+        signingOut: 'Signing out…',
+        welcome: 'Welcome',
+        currentSession: 'Current session',
+        temporaryPassword: 'You must change the temporary password before continuing.',
+        sessionError: 'We could not check your session. Please try again.',
+        networkError: 'We could not connect to the application. Please try again.',
+        groups: {
+            super_admin: 'Super Admin',
+            admin_user: 'Admin user',
+            teacher: 'Teacher',
+            parent: 'Parent',
+            student: 'Student',
+        },
+    },
+};
+
+export function saffnaTranslation(locale) {
+    return saffnaIdentityTranslations[locale === 'en' ? 'en' : 'ar'];
+}

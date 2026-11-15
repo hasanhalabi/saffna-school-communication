@@ -27,7 +27,9 @@ The planned application uses one Laravel 12 web application with an HTTP API, PH
 
 ## Current checkpoint
 
-This repository currently contains the **governed project foundation** and an installed Laravel 12 runtime foundation under `apps/web/`. Local DEV uses SQLite and has separate business, API controller, and native Web Component areas. It does **not** yet contain Saffna authentication, protected API operations, product features, real data, or a deployable release. Follow the course and repository history as later checkpoints are completed; do not treat planned features as finished software.
+This repository currently contains the **governed project foundation**, the installed Laravel 12 runtime under `apps/web/`, and the first identity-and-access implementation. Local DEV uses SQLite. The application now has secure Local DEV Super Admin provisioning, browser-session login and logout, a fully protected `/api/*` boundary, a fixed five-group permission matrix, and Arabic/English native Web Components for login and session state. Current stable Google Chrome is the only supported browser; other browsers and screen-reader certification are not part of the current work.
+
+User Management operations, school modules, real data, remote environments, and a deployable release remain incomplete. Follow the course and repository history as later checkpoints are completed; do not treat planned features as finished software.
 
 Start with:
 

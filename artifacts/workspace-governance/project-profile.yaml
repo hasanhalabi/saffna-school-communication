@@ -24,7 +24,7 @@ runtime_surfaces:
     technology: "Laravel Framework 12.72.0, PHP business classes, HTTP API, native JavaScript Web Components, Bootstrap 5.3.9, Font Awesome Free 7.3.1, SQLite"
     path: "apps/web"
     deployable: true
-    status: "runtime foundation installed; feature behavior pending"
+    status: "runtime foundation and identity/access implemented; User Management and other feature behavior pending"
     owner: "Saffna product owner; operational owner unresolved"
 
 source_strategy:
@@ -48,13 +48,15 @@ delivery:
   languages:
     - "Arabic (primary, RTL)"
     - "English (LTR)"
+  supported_browsers:
+    - "Current stable Google Chrome only; desktop and responsive mobile layouts from 360 CSS pixels"
   regions: []
 
 environments:
   - id: "local-dev"
     name: "Local DEV"
-    status: "runtime foundation installed"
-    purpose: "Local authoring and runtime environment using apps/web/database/database.sqlite"
+    status: "runtime foundation and identity/access implemented"
+    purpose: "Local authoring and runtime environment using apps/web/database/database.sqlite; persistent Super Admin not provisioned by the implementation stage"
   - id: "server-dev-staging"
     name: "Server DEV/Staging"
     status: "unresolved"
@@ -149,7 +151,7 @@ governance:
 
 constraints:
   security:
-    - "Login required for admin users, teachers, parents, and students; permissions unresolved"
+    - "Session login is implemented for Super Admin, Admin users, Teachers, Parents, and Students; the fixed initial User Management permission matrix is enforced"
   privacy:
     - "School and student-related personal data is in scope; data controls unresolved"
   regulatory: []
@@ -160,6 +162,7 @@ constraints:
     - "Bootstrap 5 only as frontend UI library; exact version resolved in later package stage"
     - "Font Awesome Free assets hosted locally; no icon CDN"
     - "Project-authored runtime PHP class and JavaScript component filenames use Saffna prefix"
+    - "Current stable Google Chrome is the only supported browser; cross-browser and screen-reader certification are outside current scope"
 
 references:
   local_repositories: []
@@ -173,14 +176,14 @@ open_decisions:
     question: "What are the detailed workflows and acceptance criteria for each named module?"
     blocking_stage: "Module implementation"
   - id: "OD-SEC-001"
-    question: "What are role permissions, account links, and student-data protection rules?"
-    blocking_stage: "Identity, schema, and module implementation"
+    question: "What are parent/student and teacher/class account links, later-module permissions, and student-data protection rules?"
+    blocking_stage: "Class, assignment, messaging, and student-data module implementation"
   - id: "OD-API-001"
-    question: "What are the API contracts, errors, and compatibility rules?"
-    blocking_stage: "API implementation"
+    question: "What are the endpoint contracts and compatibility rules for User Management and later product modules?"
+    blocking_stage: "Feature API implementation"
   - id: "OD-DELIVERY-001"
-    question: "What are supported browsers, hosting targets, regions, and release completion states?"
-    blocking_stage: "UI acceptance and deployment"
+    question: "What are the hosting targets, regions, and release completion states?"
+    blocking_stage: "Remote deployment"
   - id: "OD-DATA-001"
     question: "What final entity model, remote SQLite placement, backup, restore, and retention rules are required?"
     blocking_stage: "Feature data implementation and deployment"

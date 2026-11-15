@@ -1,9 +1,9 @@
 # Saffna Platform Baseline
 
-**Status:** Approved platform and User Management foundation; later module behavior remains unresolved
+**Status:** Approved platform foundation with identity/access implemented; User Management operations and later modules remain unresolved
 **Owner:** Hasan, requesting product owner  
 **Last reviewed:** 2026-11-15
-**Approval/task:** Direct request; foundation documentation approved as Stage SAFFNA-FND-001; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; ClickUp task `z8uq9mfg45`
+**Approval/task:** Direct request; foundation documentation approved as Stage SAFFNA-FND-001; Stage SAFFNA-ARCH-PLAN-001-R1; Stage SAFFNA-FOUNDATION-DEFS-001; Stage SAFFNA-IDENTITY-ACCESS-001-R2; ClickUp task `z8uq9mfg45`
 
 ## Purpose And Scope
 
@@ -27,6 +27,7 @@ Saffna is intended to enable communication within one school among students, tea
 - `REQ-PLATFORM-014`: Multiple devices may remain signed in. Inactive sessions expire after 120 minutes, Laravel's remember-me behavior is available, and an administrative password reset or account disable revokes existing sessions.
 - `REQ-PLATFORM-015`: Only the Super Admin creates users and assigns or changes their fixed group. Admin users may manage existing Teacher, Parent, and Student accounts. Accounts are disabled or reactivated rather than deleted, no user impersonation is allowed, and the final active Super Admin cannot be disabled or demoted.
 - `REQ-PLATFORM-016`: Custom Saffna frontend behavior uses native Web Components, locally installed Bootstrap 5, and locally hosted Font Awesome Free. React, Vue, Livewire, Tailwind, and other frontend frameworks are excluded.
+- `REQ-PLATFORM-017`: Current stable Google Chrome is the only supported browser for the current implementation. Normal desktop and responsive mobile Chrome behavior from 360 CSS pixels is validated. Other browsers, screen-reader testing, and WCAG certification are outside the current scope; standard semantic controls and keyboard behavior remain implementation basics.
 
 These IDs record approved platform direction, not invented module workflows. A later approved stage must define observable success, rejection, edge, and recovery outcomes before runtime implementation.
 
@@ -43,7 +44,7 @@ The source strategy is greenfield over Laravel 12. No reference codebase, templa
 - Define Class Management, Assignments, and Messaging actors, records, actions, lifecycle, and acceptance criteria.
 - Define parent/student links, class ownership, assignment visibility, and messaging recipients when their owning modules begin.
 - Define student and family data classification, consent where applicable, retention, deletion, audit, and recovery.
-- Confirm exact maintained browser versions and product visual tokens during UI implementation.
+- Define product branding, typography, and color tokens during later UI work.
 - Define hosting and the distinction between Server DEV/Staging and Live production.
 
 These decisions block relevant implementation stages, not this documentation foundation.
@@ -52,11 +53,11 @@ These decisions block relevant implementation stages, not this documentation fou
 
 | Surface | Current impact | Governing location |
 | --- | --- | --- |
-| Web application | One Laravel deployable and four named modules | Architecture decision and future module rules |
-| Data | SQLite selected; identity and authorization model defined for later migrations | `artifacts/database/` |
-| API | Versioned session-protected contract foundation defined | `artifacts/integrations-inbound/` |
-| Security/privacy | Five fixed user groups and initial User Management matrix defined; student/family privacy remains unresolved | `artifacts/security/` |
-| Design/localization | Arabic RTL primary, English LTR; User Management interface baseline defined | `artifacts/design-language/` |
+| Web application | One Laravel deployable; identity/access implemented and four modules named | Architecture decision and future module rules |
+| Data | SQLite identity schema, fixed groups, and audit records implemented | `artifacts/database/` |
+| API | Session login/logout and protected current-user API implemented | `artifacts/integrations-inbound/` |
+| Security/privacy | Five fixed user groups and initial User Management matrix enforced; student/family privacy remains unresolved | `artifacts/security/` |
+| Design/localization | Arabic RTL and English LTR login/session UI implemented for current stable Google Chrome | `artifacts/design-language/` |
 | Operations | Remote targets and release states unresolved | `artifacts/deployment-operations/` |
 | Future mobile | Possible future API consumer | New approved stage if adopted |
 
@@ -71,3 +72,4 @@ These decisions block relevant implementation stages, not this documentation fou
 | 2026-09-28 | Recorded initial platform scope without inventing module behavior | SAFFNA-FND-001, direct request |
 | 2026-11-15 | Added Laravel User reuse, Super Admin bootstrap, fully protected API, one-group authorization, database portability, and reuse-first requirements | SAFFNA-ARCH-PLAN-001-R1, `z8uq9mfg45` |
 | 2026-11-15 | Defined email login, session and password rules, fixed groups, User Management permissions, API conventions, identity data, and native Bootstrap/Web Component UI direction | SAFFNA-FOUNDATION-DEFS-001, `z8uq9mfg45` |
+| 2026-11-15 | Implemented secure provisioning, session authentication, the protected current-user API, fixed permission enforcement, and the Chrome-only bilingual login/session UI | SAFFNA-IDENTITY-ACCESS-001-R2, `z8uq9mfg45` |

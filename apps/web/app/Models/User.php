@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Business\Authorization\SaffnaAccountStatus;
+use App\Business\Authorization\SaffnaUserGroupCode;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use LogicException;
 
 class User extends Authenticatable
 {
@@ -21,6 +25,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_group_id',
+        'status',
+        'preferred_language',
+        'phone',
+        'must_change_password',
     ];
 
     /**
@@ -42,6 +51,33 @@ class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'status' => SaffnaAccountStatus::class,
+            'must_change_password' => 'boolean',
         ];
+    }
+
+    /** @return BelongsTo<SaffnaUserGroup, $this> */
+    public function userGroup(): BelongsTo
+    {
+        return $this->belongsTo(SaffnaUserGroup::class, 'user_group_id');
+    }
+
+    public function groupCode(): ?SaffnaUserGroupCode
+    {
+        $code = $this->userGroup?->code;
+
+        return $code instanceof SaffnaUserGroupCode ? $code : null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === SaffnaAccountStatus::Active;
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(static function (): never {
+            throw new LogicException('Saffna user accounts cannot be hard-deleted.');
+        });
     }
 }

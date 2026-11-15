@@ -1,2 +1,27 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+
+:root {
+    color-scheme: light;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgb(13 110 253 / 10%), transparent 42rem),
+        #f8f9fa;
+}
+
+.saffna-shell {
+    max-width: 36rem;
+}
+
+.saffna-card {
+    border-radius: 1rem;
+}
+
+[dir='rtl'] .me-2 {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+}

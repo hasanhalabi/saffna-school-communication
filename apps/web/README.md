@@ -1,8 +1,8 @@
 # Saffna Web Application
 
-This directory contains Saffna's only current deployable: a Laravel 12 web application. The installed foundation uses Laravel Framework `12.72.0`, SQLite for Local DEV, native JavaScript Web Components, Bootstrap `5.3.9`, and Font Awesome Free `7.3.1`.
+This directory contains Saffna's only current deployable: a Laravel 12 web application. It uses Laravel Framework `12.72.0`, SQLite for Local DEV, native JavaScript Web Components, Bootstrap `5.3.9`, and Font Awesome Free `7.3.1`.
 
-The foundation has no Saffna feature behavior yet. Authentication, protected API operations, user administration, and product modules require later approved stages. The root URL intentionally has no route until the approved authentication interface is implemented.
+Identity and access are implemented. The root URL serves the Arabic/English login and current-session shell. `POST /login` and `POST /logout` use the Laravel browser session, and every route under `/api/*` requires that session. User administration and the other product modules require later approved stages.
 
 ## Runtime boundaries
 
@@ -32,9 +32,19 @@ npm run build
 php artisan test
 ```
 
+After migrations, the first Local DEV account can be created once with:
+
+```sh
+php artisan saffna:provision-super-admin
+```
+
+The command runs only when `APP_ENV=local`, requires an empty user table, creates the fixed `support@hasanhalabi.com` Super Admin, and prints its generated temporary password once. Do not copy that password into source, logs, task text, or documentation.
+
 `.env`, `database/database.sqlite`, `vendor/`, `node_modules/`, compiled assets, caches, and logs are local state and are not committed. Local DEV uses `Asia/Amman`, Arabic as the primary application locale, English as the fallback locale, and the database file at `apps/web/database/database.sqlite` when `DB_DATABASE` is unset.
 
 Run `php artisan migrate:rollback` followed by `php artisan migrate` to verify the current empty baseline can roll back and migrate again. Other Laravel-supported database drivers can be selected through environment configuration without changing business classes; compatibility with another database is not certified.
+
+Current stable Google Chrome is the only supported browser. Validation covers normal desktop and responsive mobile Chrome behavior from 360 CSS pixels, Arabic RTL, English LTR, and standard keyboard-operable controls. Other browsers, screen readers, and WCAG certification are outside the current scope.
 
 ## Governing sources
 
